@@ -6,10 +6,12 @@ namespace YatzyBibliotek
     public class PoengBibliotek
     {
         // Hoved metode som vil starte kalkulasjonen med gitt terningsøyne of kategori
-        public int kalkulerPoengsum(string terningsØyne, string kategori)
+        public int kalkulerPoengsum(string terninger, string kategori)
         {
             // Her initialiseres poengsum og terningsøynene konverteres til int array
-            int [] konvertertTerningsØyne = konverterTerninger(terningsØyne);
+            int [] konvertertTerninger = konverterTerninger(terninger);
+            List<int> terningListe = new List<int>(konvertertTerninger);
+           
             int poengSum = 0;
 
             // Her gjør vi kategori strengen om til små bokstaver så det passer sammenligning av kategori listen
@@ -31,7 +33,7 @@ namespace YatzyBibliotek
             switch (kategori)
             {
                 case "enere":
-                    foreach (int terning in konvertertTerningsØyne)
+                    foreach (int terning in terningListe)
                     {
                         if(terning == 1)
                         {
@@ -40,7 +42,7 @@ namespace YatzyBibliotek
                     }
                     break;
                 case "toere":
-                    foreach (int terning in konvertertTerningsØyne)
+                    foreach (int terning in terningListe)
                     {
                         if(terning == 2)
                         {
@@ -49,7 +51,7 @@ namespace YatzyBibliotek
                     }
                     break;
                 case "treere":
-                    foreach (int terning in konvertertTerningsØyne)
+                    foreach (int terning in terningListe)
                     {
                         if(terning == 3)
                         {
@@ -58,7 +60,7 @@ namespace YatzyBibliotek
                     }
                     break;
                 case "firere":
-                    foreach (int terning in konvertertTerningsØyne)
+                    foreach (int terning in terningListe)
                     {
                         if(terning == 4)
                         {
@@ -67,7 +69,7 @@ namespace YatzyBibliotek
                     }
                     break;
                 case "femmere":
-                    foreach (int terning in konvertertTerningsØyne)
+                    foreach (int terning in terningListe)
                     {
                         if(terning == 5)
                         {
@@ -76,7 +78,7 @@ namespace YatzyBibliotek
                     }
                     break;
                 case "seksere":
-                    foreach (int terning in konvertertTerningsØyne)
+                    foreach (int terning in terningListe)
                     {
                         if(terning == 6)
                         {
@@ -86,14 +88,15 @@ namespace YatzyBibliotek
                     break;
                 case "par":
                     int resultat = 0;
-                    for (int i = 0; i < konvertertTerningsØyne.Length; i++)
+                    for (int i = 0; i < terningListe.Count; i++)
                     {
-                        for (int j = i + 1; j < konvertertTerningsØyne.Length; j++)
+                        for (int j = i + 1; j < terningListe.Count; j++)
                         {
-                            if(konvertertTerningsØyne[i] == konvertertTerningsØyne[j]){
-                                if (konvertertTerningsØyne[i] > resultat)
+                            if(terningListe[i] == terningListe[j])
+                            {
+                                if (terningListe[i] > resultat)
                                 {
-                                    resultat = konvertertTerningsØyne[i];
+                                    resultat = terningListe[i];
                                 }
                             }
                         }
@@ -101,6 +104,44 @@ namespace YatzyBibliotek
                     poengSum += (resultat*2);
                     break;
                 case "to par":
+                    // Her lager vi en liste som vil lagrer parene
+                    List<int> par = new List<int>();
+
+                    // Denne løkken sjekker hvor mange ganger den finner tallene 1 til 6
+                    for (int i = 0; i <= 6; i++)
+                    {
+                        int teller = 0;
+                        foreach (int terning in terningListe)
+                        {
+                            if (terning == i)
+                            {
+                                teller++;
+                            }
+                        }
+
+                        // Hvis den har funnet et tall 4 ganger så har vi 2 par på det tallet
+                        if (teller == 4)
+                        {
+                            par.Add(i);
+                            par.Add(i);
+                        
+                        // Hvis den har funnet et tall 2 eller 3 ganger da har vi bare 1 par funnet på det tallet
+                        } else if (teller >= 2)
+                        {
+                            par.Add(i);
+                        }
+                    }
+
+                    // Så lenge det er funnet to par kan vi kalkulere poengsummen
+                    if (par.Count == 2)
+                    {
+                        foreach (int terning in par)
+                        {
+                            poengSum += (terning*2);
+                        }
+                    }
+
+
                     break;
                 case "tre like":
                     break;
