@@ -6,35 +6,40 @@ namespace YatzyBibliotek
 {
     public class PoengBibliotek
     {
-
         // Offentlig liste som viser alle mulige kategorier
-        public List<string> kategorier = new List<string>()
+        private List<string> kategorier = new List<string>()
         {
                 "enere","toere","treere","firere","femmere",
                 "seksere","par","to par","tre like","fire like",
                 "liten straight","stor straight","fullt hus","sjanse","yatzy"
         };
 
+        // Metode som vil skrive i konsollen alle mulige valg av kategorier
+        public void getKategorier()
+        {
+            Console.WriteLine(string.Format("Her er liste over alle mulige kategorier: {0}.", string.Join(",", kategorier)));
+        }
+
         // Hoved metode som vil starte kalkulasjonen med gitt terningsøyne of kategori
         public int kalkulerPoengsum(string terninger, string kategori)
         {
             // Her initialiseres poengsum og terningsøynene konverteres til int array
             List<int> terningListe = new List<int>(konverterTerninger(terninger));
-           
+
             int poengSum = 0;
 
             // Her gjør vi kategori strengen om til små bokstaver så det passer sammenligning av kategori listen
             kategori = kategori.ToLower();
-            
+
             // Liste med alle kategoriene som er gyldig
-            
-            
+
+
             // Her valideres en oppgitte kategorien for å sjekke om den er gyldig
             if (!kategorier.Contains(kategori))
             {
                 throw new ArgumentException("Ugyldig kategori oppgitt!");
             }
-            
+
             // Her er switchen som sjekker gitt kategori og utfører kalkulasjon for den kategorien 
             switch (kategori)
             {
@@ -84,15 +89,16 @@ namespace YatzyBibliotek
                     poengSum = beregnYatzy(terningListe);
                     break;
                 default:
-                break;
+                    break;
             }
 
             return poengSum;
         }
 
-        public string [] finnBesteKategori(string terninger)
+        // METODE FOR Å FINNE KATEGORI MED HØYEST POENGSUM
+        public string[] finnBesteKategori(string terninger)
         {
-            string [] resultat = new string[2];
+            string[] resultat = new string[2];
             int høyestePoengSum = 0;
             string høyesteKategori = "Ingen kategori";
 
@@ -111,16 +117,14 @@ namespace YatzyBibliotek
             resultat[0] = høyesteKategori;
             resultat[1] = høyestePoengSum.ToString();
 
-            Console.WriteLine("Her er kategori: "+resultat[0]+" denne ga poengsummen: "+resultat[1]);
+            Console.WriteLine("Her er kategori: " + resultat[0] + " denne ga poengsummen: " + resultat[1]);
             // Returnerer streng array med kategorien og poengsummen
             return resultat;
         }
 
+        // METODER FOR BEREGNING AV POENGSUMMER
 
-
-
-        // METODER FOR BEREGNING
-
+        // Kategorier: enere,toere,treere,firere,femmere,seksere
         private int beregnLike(List<int> terningListe, string kategori)
         {
             int poengSum = 0;
@@ -129,7 +133,7 @@ namespace YatzyBibliotek
                 case "enere":
                     foreach (int terning in terningListe)
                     {
-                        if(terning == 1)
+                        if (terning == 1)
                         {
                             poengSum += terning;
                         }
@@ -138,7 +142,7 @@ namespace YatzyBibliotek
                 case "toere":
                     foreach (int terning in terningListe)
                     {
-                        if(terning == 2)
+                        if (terning == 2)
                         {
                             poengSum += terning;
                         }
@@ -147,7 +151,7 @@ namespace YatzyBibliotek
                 case "treere":
                     foreach (int terning in terningListe)
                     {
-                        if(terning == 3)
+                        if (terning == 3)
                         {
                             poengSum += terning;
                         }
@@ -156,7 +160,7 @@ namespace YatzyBibliotek
                 case "firere":
                     foreach (int terning in terningListe)
                     {
-                        if(terning == 4)
+                        if (terning == 4)
                         {
                             poengSum += terning;
                         }
@@ -165,7 +169,7 @@ namespace YatzyBibliotek
                 case "femmere":
                     foreach (int terning in terningListe)
                     {
-                        if(terning == 5)
+                        if (terning == 5)
                         {
                             poengSum += terning;
                         }
@@ -174,7 +178,7 @@ namespace YatzyBibliotek
                 case "seksere":
                     foreach (int terning in terningListe)
                     {
-                        if(terning == 6)
+                        if (terning == 6)
                         {
                             poengSum += terning;
                         }
@@ -187,6 +191,7 @@ namespace YatzyBibliotek
             return poengSum;
         }
 
+        // KATEGORI PAR
         private int beregnPar(List<int> terningListe)
         {
             int resultat = 0;
@@ -209,9 +214,10 @@ namespace YatzyBibliotek
                 }
             }
 
-            return resultat*2;
+            return resultat * 2;
         }
 
+        // KATEGORI TO PAR
         private int beregnToPar(List<int> terningListe)
         {
             int poengSum = 0;
@@ -237,7 +243,8 @@ namespace YatzyBibliotek
                 {
                     par.Add(i);
                     par.Add(i);
-                } else if (teller >= 2)
+                }
+                else if (teller >= 2)
                 {
                     par.Add(i);
                 }
@@ -248,13 +255,14 @@ namespace YatzyBibliotek
             {
                 foreach (int terning in par)
                 {
-                    poengSum += (terning*2);
+                    poengSum += (terning * 2);
                 }
             }
 
             return poengSum;
         }
 
+        // KATEGORI TRE LIKE
         private int beregnTreLike(List<int> terningListe)
         {
             int resultat = 0;
@@ -272,15 +280,16 @@ namespace YatzyBibliotek
                     }
                 }
                 // Hvis telleren er større eller lik 3 så har vi funnet 3 like
-                if ( teller >= 3)
+                if (teller >= 3)
                 {
                     resultat = i;
                 }
             }
 
-            return resultat*3;
+            return resultat * 3;
         }
 
+        // KATEGORI FIRE LIKE
         private int beregnFireLike(List<int> terningListe)
         {
             int poengSum = 0;
@@ -298,15 +307,16 @@ namespace YatzyBibliotek
                 // Hvis det blir funnet 4 like eller mer så legger vi tallet multiplisert med 4 til i summen
                 if (teller >= 4)
                 {
-                    poengSum += (i*4);
+                    poengSum += (i * 4);
                 }
             }
-            
+
             return poengSum;
         }
 
+        // KATEGORI LITEN STRAIGHT
         private int beregnLitenStraight(List<int> terningListe)
-        { 
+        {
             int poengSum = 0;
             // Her lager vi en ny liste som tar unike verdier fra original listen
             List<int> litenStraightListe = terningListe.Distinct().ToList();
@@ -322,8 +332,9 @@ namespace YatzyBibliotek
             return poengSum;
         }
 
+        // KATEGORI STOR STRAIGHT
         private int beregnStorStraight(List<int> terningListe)
-        { 
+        {
             int poengSum = 0;
             // Her lager vi en ny liste som tar unike verdier fra original listen
             List<int> storStraightListe = terningListe.Distinct().ToList();
@@ -339,12 +350,13 @@ namespace YatzyBibliotek
             return poengSum;
         }
 
+        // KATEGORI FULLT HUS
         private int beregnFulltHus(List<int> terningListe)
         {
             int poengSum = 0;
             int toLike = 0;
             int treLike = 0;
-            
+
             // Løkke som går gjennom tallene 1 til 6 og teller hvor mange like som finnes
             for (int i = 1; i <= 6; i++)
             {
@@ -359,11 +371,12 @@ namespace YatzyBibliotek
                 // Ender vi opp med to like har vi et par
                 if (teller == 2)
                 {
-                    toLike = 2*i;
-                // Ender vi opp med tre like har vi en trio
-                } else if (teller == 3)
+                    toLike = 2 * i;
+                    // Ender vi opp med tre like har vi en trio
+                }
+                else if (teller == 3)
                 {
-                    treLike = 3*i;
+                    treLike = 3 * i;
                 }
             }
 
@@ -376,6 +389,7 @@ namespace YatzyBibliotek
             return poengSum;
         }
 
+        // KATEGORI SJANSE
         private int beregnSjanse(List<int> terningListe)
         {
             int poengSum = 0;
@@ -388,6 +402,7 @@ namespace YatzyBibliotek
             return poengSum;
         }
 
+        // KATEGORI YATZY
         private int beregnYatzy(List<int> terningListe)
         {
             int poengSum = 0;
@@ -409,26 +424,29 @@ namespace YatzyBibliotek
                     poengSum = 50;
                 }
             }
-            
+
             return poengSum;
         }
 
         // VALIDERING AV TERNINGER
 
         // Denne metoden validerer og konverterer strengen med terningsøyne til integer array
-        private int [] konverterTerninger(string terningsØyne)
+        private int[] konverterTerninger(string terningsØyne)
         {
-            int [] resultat = {};
-            if(terningsØyne.Length <= 0) 
+            int[] resultat = { };
+            // Hvis vi ikke mottar noen terninger får vi error
+            if (terningsØyne.Length <= 0)
             {
                 throw new ArgumentException("Ingen terningsøyne oppgitt!");
             }
 
+            // Hvis det er feil format på terningene får vi error
+            // Eksempel: 1.2.3.4.5
             try
             {
-                resultat = System.Array.ConvertAll(terningsØyne.Split(','), int.Parse);
+                resultat = Array.ConvertAll(terningsØyne.Split(','), int.Parse);
             }
-            catch (System.FormatException)
+            catch (FormatException)
             {
                 throw new FormatException("Feil format på terningene som ble oppgitt!");
             }
@@ -440,22 +458,25 @@ namespace YatzyBibliotek
         }
 
         // Metode for validering av terningsøynene 
-        private void validerTerninger (int [] terningsØyne)
+        private void validerTerninger(int[] terningsØyne)
         {
+            // Hvis vi ikke blir gitt 5 terninger får vi error
             if (terningsØyne.Length != 5)
             {
-                throw new ArgumentException("Kalkulasjonen trenger 5 terninger, du oppga "+terningsØyne.Length+" !");
+                throw new ArgumentException("Kalkulasjonen trenger 5 terninger, du oppga " + terningsØyne.Length + " !");
             }
 
+            // Hvis noen av terningene er større enn 6 eller mindre enn 1 får vi error
             foreach (int terning in terningsØyne)
             {
-                if(terning < 1 )
+                if (terning < 1)
                 {
-                    throw new ArgumentException("Terningene kan ikke ha mindre enn 1 øye, du oppga "+terning+" !");
+                    throw new ArgumentException("Terningene kan ikke ha mindre enn 1 øye, du oppga " + terning + " !");
 
-                } else if (terning > 6) 
+                }
+                else if (terning > 6)
                 {
-                    throw new ArgumentException("Terningene kan ikke ha flere øyer enn 6, du oppga "+terning+" !");
+                    throw new ArgumentException("Terningene kan ikke ha flere øyer enn 6, du oppga " + terning + " !");
                 }
             }
 
