@@ -108,7 +108,7 @@ namespace YatzyBibliotekTest
         }
 
         [TestMethod]
-        public void ToPar()
+        public void TestToPar()
         {
             string [] terningKast = {"1,4,1,4,1","1,1,2,2,2","4,2,4,4,6"};
 
@@ -121,9 +121,113 @@ namespace YatzyBibliotekTest
             Assert.AreEqual(0,resultat3);
         }
 
-        
+        [TestMethod]
+        public void TestTreLike()
+        {
+            string[] terningKast = { "5,4,1,4,1", "1,1,2,2,2", "4,4,4,4,6" };
 
-        
+            int resultat1 = poengBibliotek.kalkulerPoengsum(terningKast[0], "tre like");
+            int resultat2 = poengBibliotek.kalkulerPoengsum(terningKast[1], "tre like");
+            int resultat3 = poengBibliotek.kalkulerPoengsum(terningKast[2], "tre like");
+
+            Assert.AreEqual(0, resultat1);
+            Assert.AreEqual(6, resultat2);
+            Assert.AreEqual(12, resultat3);
+        }
+
+        [TestMethod]
+        public void TestFireLike()
+        {
+            string[] terningKast = { "5,4,1,4,1", "1,2,2,2,2", "4,4,4,4,6" };
+
+            int resultat1 = poengBibliotek.kalkulerPoengsum(terningKast[0], "fire like");
+            int resultat2 = poengBibliotek.kalkulerPoengsum(terningKast[1], "fire like");
+            int resultat3 = poengBibliotek.kalkulerPoengsum(terningKast[2], "fire like");
+
+            Assert.AreEqual(0, resultat1);
+            Assert.AreEqual(8, resultat2);
+            Assert.AreEqual(16, resultat3);
+        }
+
+        [TestMethod]
+        public void TestLitenStraight()
+        {
+            string[] terningKast = { "2,3,4,5,6", "5,4,3,2,1", "1,2,3,4,5" };
+
+            int resultat1 = poengBibliotek.kalkulerPoengsum(terningKast[0], "liten straight");
+            int resultat2 = poengBibliotek.kalkulerPoengsum(terningKast[1], "liten straight");
+            int resultat3 = poengBibliotek.kalkulerPoengsum(terningKast[2], "liten straight");
+
+            Assert.AreEqual(0, resultat1);
+            Assert.AreEqual(15, resultat2);
+            Assert.AreEqual(15, resultat3);
+        }
+
+        [TestMethod]
+        public void TestStorStraight()
+        {
+            string[] terningKast = { "2,3,4,5,6", "1,2,3,4,6", "6,5,4,3,2" };
+
+            int resultat1 = poengBibliotek.kalkulerPoengsum(terningKast[0], "stor straight");
+            int resultat2 = poengBibliotek.kalkulerPoengsum(terningKast[1], "stor straight");
+            int resultat3 = poengBibliotek.kalkulerPoengsum(terningKast[2], "stor straight");
+
+            Assert.AreEqual(20, resultat1);
+            Assert.AreEqual(0, resultat2);
+            Assert.AreEqual(20, resultat3);
+        }
+
+        [TestMethod]
+        public void TestFulltHus()
+        {
+            string[] terningKast = { "2,2,4,5,6", "2,5,5,2,2", "2,2,2,2,2" };
+
+            int resultat1 = poengBibliotek.kalkulerPoengsum(terningKast[0], "fullt hus");
+            int resultat2 = poengBibliotek.kalkulerPoengsum(terningKast[1], "fullt hus");
+            int resultat3 = poengBibliotek.kalkulerPoengsum(terningKast[2], "fullt hus");
+
+            Assert.AreEqual(0, resultat1);
+            Assert.AreEqual(16, resultat2);
+            Assert.AreEqual(10, resultat3);
+        }
+
+        [TestMethod]
+        public void TestSjanse()
+        {
+            string[] terningKast = { "1,2,3,4,5", "4,1,3,5,5", "2,2,2,2,2" };
+
+            int resultat1 = poengBibliotek.kalkulerPoengsum(terningKast[0], "sjanse");
+            int resultat2 = poengBibliotek.kalkulerPoengsum(terningKast[1], "sjanse");
+            int resultat3 = poengBibliotek.kalkulerPoengsum(terningKast[2], "sjanse");
+
+            Assert.AreEqual(15, resultat1);
+            Assert.AreEqual(18, resultat2);
+            Assert.AreEqual(10, resultat3);
+        }
+
+        [TestMethod]
+        public void TestYatzy()
+        {
+            string[] terningKast = { "2,2,4,5,6", "2,5,5,2,2", "2,2,2,2,2" };
+
+            int resultat1 = poengBibliotek.kalkulerPoengsum(terningKast[0], "yatzy");
+            int resultat2 = poengBibliotek.kalkulerPoengsum(terningKast[1], "yatzy");
+            int resultat3 = poengBibliotek.kalkulerPoengsum(terningKast[2], "yatzy");
+
+            Assert.AreEqual(0, resultat1);
+            Assert.AreEqual(0, resultat2);
+            Assert.AreEqual(50, resultat3);
+        }
+
+
+
+
+
+
+
+
+
+
 
     }
 }

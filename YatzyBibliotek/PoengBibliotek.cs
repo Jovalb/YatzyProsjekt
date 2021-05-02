@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace YatzyBibliotek
 {
@@ -9,8 +10,7 @@ namespace YatzyBibliotek
         public int kalkulerPoengsum(string terninger, string kategori)
         {
             // Her initialiseres poengsum og terningsøynene konverteres til int array
-            int [] konvertertTerninger = konverterTerninger(terninger);
-            List<int> terningListe = new List<int>(konvertertTerninger);
+            List<int> terningListe = new List<int>(konverterTerninger(terninger));
            
             int poengSum = 0;
 
@@ -30,6 +30,65 @@ namespace YatzyBibliotek
                 throw new ArgumentException("Ugyldig kategori oppgitt!");
             }
             
+            switch (kategori)
+            {
+                case "enere":
+                    poengSum = beregnLike(terningListe, kategori);
+                    break;
+                case "toere":
+                    poengSum = beregnLike(terningListe, kategori);
+                    break;
+                case "treere":
+                    poengSum = beregnLike(terningListe, kategori);
+                    break;
+                case "firere":
+                    poengSum = beregnLike(terningListe, kategori);
+                    break;
+                case "femmere":
+                    poengSum = beregnLike(terningListe, kategori);
+                    break;
+                case "seksere":
+                    poengSum = beregnLike(terningListe, kategori);
+                    break;
+                case "par":
+                    poengSum = beregnPar(terningListe);
+                    break;
+                case "to par":
+                    poengSum = beregnToPar(terningListe);
+                    break;
+                case "tre like":
+                    poengSum = beregnTreLike(terningListe);
+                    break;
+                case "fire like":
+                    poengSum = beregnFireLike(terningListe);
+                    break;
+                case "liten straight":
+                    poengSum = beregnLitenStraight(terningListe);
+                    break;
+                case "stor straight":
+                    poengSum = beregnStorStraight(terningListe);
+                    break;
+                case "fullt hus":
+                    poengSum = beregnFulltHus(terningListe);
+                    break;
+                case "sjanse":
+                    poengSum = beregnSjanse(terningListe);
+                    break;
+                case "yatzy":
+                    poengSum = beregnYatzy(terningListe);
+                    break;
+                default:
+                break;
+            }
+
+            return poengSum;
+        }
+
+        // METODER FOR BEREGNING
+
+        private int beregnLike(List<int> terningListe, string kategori)
+        {
+            int poengSum = 0;
             switch (kategori)
             {
                 case "enere":
@@ -86,84 +145,218 @@ namespace YatzyBibliotek
                         }
                     }
                     break;
-                case "par":
-                    int resultat = 0;
-                    for (int i = 0; i < terningListe.Count; i++)
-                    {
-                        for (int j = i + 1; j < terningListe.Count; j++)
-                        {
-                            if(terningListe[i] == terningListe[j])
-                            {
-                                if (terningListe[i] > resultat)
-                                {
-                                    resultat = terningListe[i];
-                                }
-                            }
-                        }
-                    }
-                    poengSum += (resultat*2);
-                    break;
-                case "to par":
-                    // Her lager vi en liste som vil lagrer parene
-                    List<int> par = new List<int>();
-
-                    // Denne løkken sjekker hvor mange ganger den finner tallene 1 til 6
-                    for (int i = 0; i <= 6; i++)
-                    {
-                        int teller = 0;
-                        foreach (int terning in terningListe)
-                        {
-                            if (terning == i)
-                            {
-                                teller++;
-                            }
-                        }
-
-                        // Hvis den har funnet et tall 4 ganger så har vi 2 par på det tallet
-                        if (teller == 4)
-                        {
-                            par.Add(i);
-                            par.Add(i);
-                        
-                        // Hvis den har funnet et tall 2 eller 3 ganger da har vi bare 1 par funnet på det tallet
-                        } else if (teller >= 2)
-                        {
-                            par.Add(i);
-                        }
-                    }
-
-                    // Så lenge det er funnet to par kan vi kalkulere poengsummen
-                    if (par.Count == 2)
-                    {
-                        foreach (int terning in par)
-                        {
-                            poengSum += (terning*2);
-                        }
-                    }
-
-
-                    break;
-                case "tre like":
-                    break;
-                case "fire like":
-                    break;
-                case "liten straight":
-                    break;
-                case "stor straight":
-                    break;
-                case "fullt hus":
-                    break;
-                case "sjanse":
-                    break;
-                case "yatzy":
-                    break;
                 default:
-                break;
+                    break;
             }
 
             return poengSum;
         }
-    
+
+        private int beregnPar(List<int> terningListe)
+        {
+            int resultat = 0;
+
+            // Løkke som blar gjennom alle terningene
+            for (int i = 0; i < terningListe.Count; i++)
+            {
+                // Løkke som blar gjennom alle terningene et hakk etter forrige løkke
+                for (int j = i + 1; j < terningListe.Count; j++)
+                {
+                    // Sjekker om nåværende terning er lik neste
+                    if (terningListe[i] == terningListe[j])
+                    {
+                        // Legger til terningen i resultat så lenge den er større en nåværende resultat
+                        if (terningListe[i] > resultat)
+                        {
+                            resultat = terningListe[i];
+                        }
+                    }
+                }
+            }
+
+            return resultat*2;
+        }
+
+        private int beregnToPar(List<int> terningListe)
+        {
+            int poengSum = 0;
+            // Her lager vi en liste som vil lagrer parene
+            List<int> par = new List<int>();
+
+            // Denne løkken sjekker hvor mange ganger den finner tallene 1 til 6
+            for (int i = 1; i <= 6; i++)
+            {
+                int teller = 0;
+
+                // Denne løkken sjekker med alle terningene i listen og finner vi lik terning til tallet øker vi teller
+                foreach (int terning in terningListe)
+                {
+                    if (terning == i)
+                    {
+                        teller++;
+                    }
+                }
+
+                // Hvis vi finner 4 like tall da har vi 2 par, finner vi 2 eller 3, da har vi 1 par av dette tallet
+                if (teller == 4)
+                {
+                    par.Add(i);
+                    par.Add(i);
+                } else if (teller >= 2)
+                {
+                    par.Add(i);
+                }
+            }
+
+            // Hvis vi har funnet 2 par da kan vi kalkulere poengsummen
+            if (par.Count == 2)
+            {
+                foreach (int terning in par)
+                {
+                    poengSum += (terning*2);
+                }
+            }
+
+            return poengSum;
+        }
+
+        private int beregnTreLike(List<int> terningListe)
+        {
+            int resultat = 0;
+            // Løkke som blar gjennom tallet 1 til 6 som representerer øynene
+            for (int i = 1; i <= 6; i++)
+            {
+                int teller = 0;
+                // Løkke som blar gjennom terningene
+                foreach (int terning in terningListe)
+                {
+                    // Hvis vi finner en terning som er like det nåværende tallet så øker vi teller
+                    if (terning == i)
+                    {
+                        teller++;
+                    }
+                }
+                // Hvis telleren er større eller lik 3 så har vi funnet 3 like
+                if ( teller >= 3)
+                {
+                    resultat = i;
+                }
+            }
+
+            return resultat*3;
+        }
+
+        private int beregnFireLike(List<int> terningListe)
+        {
+            int poengSum = 0;
+            for (int i = 1; i <= 6; i++)
+            {
+                int teller = 0;
+                foreach (int terning in terningListe)
+                {
+                    if (terning == i)
+                    {
+                        teller++;
+                    }
+                }
+
+                // Hvis det blir funnet 4 like eller mer så legger vi tallet multiplisert med 4 til i summen
+                if (teller >= 4)
+                {
+                    poengSum += (i*4);
+                }
+            }
+            
+            return poengSum;
+        }
+
+        private int beregnLitenStraight(List<int> terningListe)
+        { 
+            int poengSum = 0;
+            // Her lager vi en ny liste som tar unike verdier fra original listen
+            List<int> litenStraightListe = terningListe.Distinct().ToList();
+            // Deretter sorterer vi listen stigende
+            litenStraightListe.Sort();
+
+            // Sjekker om listen har 5 terninger,siste terning er 5 og første terning er 1
+            if (litenStraightListe.Count == 5 && litenStraightListe[0] == 1 && litenStraightListe[4] == 5)
+            {
+                poengSum = 15;
+            }
+
+            return poengSum;
+        }
+
+        private int beregnStorStraight(List<int> terningListe)
+        { 
+            int poengSum = 0;
+            // Her lager vi en ny liste som tar unike verdier fra original listen
+            List<int> storStraightListe = terningListe.Distinct().ToList();
+            // Deretter sorterer vi listen stigende
+            storStraightListe.Sort();
+
+            // Sjekker om listen har 5 terninger,siste terning er 6 og første terning er 2
+            if (storStraightListe.Count == 5 && storStraightListe[0] == 2 && storStraightListe[4] == 6)
+            {
+                poengSum = 20;
+            }
+
+            return poengSum;
+        }
+
+        private int beregnFulltHus(List<int> terningListe)
+        {
+            int poengSum = 0;
+            // Beregner trelike og to like ved hjelp av eksisterende metoder
+            int treLike = beregnTreLike(terningListe);
+            int toLike = beregnPar(terningListe);
+
+            // Hvis disse to tallene er større enn null da stemmer det at vi har fullt hus
+            if (treLike > 0 && toLike > 0)
+            {
+                poengSum = treLike + toLike;
+            }
+
+            return poengSum;
+        }
+
+        private int beregnSjanse(List<int> terningListe)
+        {
+            int poengSum = 0;
+            // Her adderes hver terning inn i poengsummen
+            foreach (int terning in terningListe)
+            {
+                poengSum += terning;
+            }
+
+            return poengSum;
+        }
+
+        private int beregnYatzy(List<int> terningListe)
+        {
+            int poengSum = 0;
+            for (int i = 1; i <= 6; i++)
+            {
+                int teller = 0;
+                foreach (int terning in terningListe)
+                {
+                    if (terning == i)
+                    {
+                        teller++;
+                    }
+                }
+
+                if (teller == 5)
+                {
+                    poengSum = 50;
+                }
+            }
+            
+            return poengSum;
+        }
+
+        // VALIDERING AV TERNINGER
+
         // Denne metoden validerer og konverterer strengen med terningsøyne til integer array
         private int [] konverterTerninger(string terningsØyne)
         {
@@ -179,7 +372,7 @@ namespace YatzyBibliotek
             }
             catch (System.FormatException)
             {
-                throw new FormatException("Feil format på terningsøynene, husk å ha de kommaseparert!");
+                throw new FormatException("Feil format på terningene som ble oppgitt!");
             }
 
             validerTerninger(resultat);
