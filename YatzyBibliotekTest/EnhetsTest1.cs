@@ -180,7 +180,7 @@ namespace YatzyBibliotekTest
         [TestMethod]
         public void TestFulltHus()
         {
-            string[] terningKast = { "2,2,4,5,6", "2,5,5,2,2", "2,2,2,2,2" };
+            string[] terningKast = { "1,3,3,3,3", "2,5,5,2,2", "2,2,2,2,2" };
 
             int resultat1 = poengBibliotek.kalkulerPoengsum(terningKast[0], "fullt hus");
             int resultat2 = poengBibliotek.kalkulerPoengsum(terningKast[1], "fullt hus");
@@ -188,7 +188,7 @@ namespace YatzyBibliotekTest
 
             Assert.AreEqual(0, resultat1);
             Assert.AreEqual(16, resultat2);
-            Assert.AreEqual(10, resultat3);
+            Assert.AreEqual(0, resultat3);
         }
 
         [TestMethod]
@@ -219,15 +219,12 @@ namespace YatzyBibliotekTest
             Assert.AreEqual(50, resultat3);
         }
 
-
-
-
-
-
-
-
-
-
-
+        [TestMethod]
+        public void TestFinnBesteKategori()
+        {
+            Assert.AreEqual(poengBibliotek.finnBesteKategori("1,3,3,3,3")[0],"sjanse");
+            Assert.AreEqual(poengBibliotek.finnBesteKategori("1,1,1,1,1")[1], "50");
+            Assert.AreEqual(poengBibliotek.finnBesteKategori("1,2,3,4,5")[0], "liten straight");
+        }
     }
 }

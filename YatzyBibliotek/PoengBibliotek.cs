@@ -6,6 +6,15 @@ namespace YatzyBibliotek
 {
     public class PoengBibliotek
     {
+
+        // Offentlig liste som viser alle mulige kategorier
+        public List<string> kategorier = new List<string>()
+        {
+                "enere","toere","treere","firere","femmere",
+                "seksere","par","to par","tre like","fire like",
+                "liten straight","stor straight","fullt hus","sjanse","yatzy"
+        };
+
         // Hoved metode som vil starte kalkulasjonen med gitt terningsøyne of kategori
         public int kalkulerPoengsum(string terninger, string kategori)
         {
@@ -18,11 +27,7 @@ namespace YatzyBibliotek
             kategori = kategori.ToLower();
             
             // Liste med alle kategoriene som er gyldig
-            List<string> kategorier = new List<string>(){
-                "enere","toere","treere","firere","femmere",
-                "seksere","par","to par","tre like","fire like",
-                "liten straight","stor straight","fullt hus","sjanse","yatzy"
-            };
+            
             
             // Her valideres en oppgitte kategorien for å sjekke om den er gyldig
             if (!kategorier.Contains(kategori))
@@ -30,6 +35,7 @@ namespace YatzyBibliotek
                 throw new ArgumentException("Ugyldig kategori oppgitt!");
             }
             
+            // Her er switchen som sjekker gitt kategori og utfører kalkulasjon for den kategorien 
             switch (kategori)
             {
                 case "enere":
@@ -83,6 +89,35 @@ namespace YatzyBibliotek
 
             return poengSum;
         }
+
+        public string [] finnBesteKategori(string terninger)
+        {
+            string [] resultat = new string[2];
+            int høyestePoengSum = 0;
+            string høyesteKategori = "Ingen kategori";
+
+            // Går gjennom alle kategorier og kalkulerer poengsummen for hver kategori
+            foreach (string kategori in kategorier)
+            {
+                int midlertidigResultat = kalkulerPoengsum(terninger, kategori);
+                // Hvis vi finner en kategori med høyere resultat lagres denne
+                if (midlertidigResultat > høyestePoengSum)
+                {
+                    høyestePoengSum = midlertidigResultat;
+                    høyesteKategori = kategori;
+                }
+            }
+            // Putter inn de kalkularte variablene inn i resultat 
+            resultat[0] = høyesteKategori;
+            resultat[1] = høyestePoengSum.ToString();
+
+            Console.WriteLine("Her er kategori: "+resultat[0]+" denne ga poengsummen: "+resultat[1]);
+            // Returnerer streng array med kategorien og poengsummen
+            return resultat;
+        }
+
+
+
 
         // METODER FOR BEREGNING
 
@@ -307,11 +342,32 @@ namespace YatzyBibliotek
         private int beregnFulltHus(List<int> terningListe)
         {
             int poengSum = 0;
-            // Beregner trelike og to like ved hjelp av eksisterende metoder
-            int treLike = beregnTreLike(terningListe);
-            int toLike = beregnPar(terningListe);
+            int toLike = 0;
+            int treLike = 0;
+            
+            // Løkke som går gjennom tallene 1 til 6 og teller hvor mange like som finnes
+            for (int i = 1; i <= 6; i++)
+            {
+                int teller = 0;
+                foreach (int terning in terningListe)
+                {
+                    if (terning == i)
+                    {
+                        teller++;
+                    }
+                }
+                // Ender vi opp med to like har vi et par
+                if (teller == 2)
+                {
+                    toLike = 2*i;
+                // Ender vi opp med tre like har vi en trio
+                } else if (teller == 3)
+                {
+                    treLike = 3*i;
+                }
+            }
 
-            // Hvis disse to tallene er større enn null da stemmer det at vi har fullt hus
+            // Hvis vi har et par og en trio så har vi fullt hus og kan kalkulere resultat
             if (treLike > 0 && toLike > 0)
             {
                 poengSum = treLike + toLike;
@@ -335,6 +391,7 @@ namespace YatzyBibliotek
         private int beregnYatzy(List<int> terningListe)
         {
             int poengSum = 0;
+            // Løkke som løper gjennom tallet 1 til 6 og teller hvor mange ganger vi finner duplikater av et tall
             for (int i = 1; i <= 6; i++)
             {
                 int teller = 0;
@@ -346,6 +403,7 @@ namespace YatzyBibliotek
                     }
                 }
 
+                // Har vi 5 like tall har vi nådd yatzy
                 if (teller == 5)
                 {
                     poengSum = 50;
